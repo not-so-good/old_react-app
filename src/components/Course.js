@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { read, insert, update } from '../services/apiService';
+import { read, insert, update, remove } from '../services/apiService';
 
 const Course = ({ match, history }) => {
 
@@ -21,7 +21,7 @@ const Course = ({ match, history }) => {
     function changeHandler(e) {
         setCourse({
             ...course,
-            [e.target.name]:[e.target.value]
+            [e.target.name]: e.target.value
         });
     }
 
@@ -29,9 +29,15 @@ const Course = ({ match, history }) => {
         history.push('/courses');
     }
 
+    const del = () => {
+        remove('courses', id, (err, result) => {
+            history.push('/courses');
+        });
+    }
+
     const save = () => {
         if (id === '0') {
-            //delete course._id;
+            delete course._id;
             insert('courses', course, data => {
                 if (data) return history.push('/courses');
                 console.log('There was error during save data');
@@ -54,18 +60,18 @@ const Course = ({ match, history }) => {
                     <input type='text'
                         name='name'
                         value={course.name}
-                        onChange={changeHandler} />
+                        onChange={changeHandler} required/>
                 </div>
                 <div style={{ margin: '12px 0' }}>
                     <label htmlFor='points'>Course points: </label>
                     <input type='number'
                         name='points'
                         value={course.points}
-                        onChange={changeHandler} />
+                        onChange={changeHandler} required/>
                 </div>
                 <hr />
                 <div className='left'>
-                    <button type='button'>DELETE</button>
+                    <button type='button' onClick={del}>DELETE</button>
                 </div>
                 <div className='right'>
                     <button type='button' onClick={back}>BACK</button>
