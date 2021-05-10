@@ -3,7 +3,7 @@ import { read, insert, update, remove } from '../services/apiService';
 
 const Student = ({ match, history }) => {
 
-    
+
     const [id] = useState(match.params.id);
     const [student, setStudent] = useState({
         _id: '0',
@@ -28,6 +28,20 @@ const Student = ({ match, history }) => {
         });
     }
 
+    function inputValidation() {
+        var n = student.firstName;
+        var m = student.lastName;
+        if (n === '') {
+            console.log("Enter the student's first name!");
+            return false;
+        }
+        if (m === '') {
+            console.log("Enter the student's last name!");
+            return false;
+        }
+        return true;
+    }
+
     const back = () => {
         history.push('/students');
     }
@@ -39,18 +53,21 @@ const Student = ({ match, history }) => {
     }
 
     const save = () => {
-        if (id === '0') {
-            delete student._id;
-            insert('students', student, data => {
-                if (data) return history.push('/students');
-                console.log('There was error during save data');
-            })
-        } else {
-            update('students', id, student, data => {
-                if (data) return history.push('/students');
-                console.log('There was error during save data');
+        const valid = inputValidation();
+        if (valid) {
+            if (id === '0') {
+                delete student._id;
+                insert('students', student, data => {
+                    if (data) return history.push('/students');
+                    console.log('There was error during save data');
+                })
+            } else {
+                update('students', id, student, data => {
+                    if (data) return history.push('/students');
+                    console.log('There was error during save data');
 
-            })
+                })
+            }
         }
     }
 
@@ -63,14 +80,14 @@ const Student = ({ match, history }) => {
                     <input type='text'
                         name='firstName'
                         value={student.firstName}
-                        onChange={changeHandler} required/>
+                        onChange={changeHandler} required />
                 </div>
                 <div style={{ margin: '12px 0' }}>
                     <label htmlFor='points'>Student Last name: </label>
                     <input type='text'
                         name='lastName'
                         value={student.lastName}
-                        onChange={changeHandler} required/>
+                        onChange={changeHandler} required />
                 </div>
                 <div style={{ margin: '12px 0' }}>
                     <label htmlFor='points'>Students Year Of Birth: </label>
@@ -100,4 +117,4 @@ const Student = ({ match, history }) => {
     );
 }
 
-export default Student; 
+export default Student;

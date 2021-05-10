@@ -25,6 +25,20 @@ const Course = ({ match, history }) => {
         });
     }
 
+   function inputValidation() {
+        var n = course.name;
+        var m = course.points;
+        if (n === '') {
+            console.log('Input a course name!');
+            return false;
+        }
+        if (m === 0) {
+            console.log('Input a course points!');
+            return false;
+        }
+        return true;
+    }
+
     const back = () => {
         history.push('/courses');
     }
@@ -36,18 +50,21 @@ const Course = ({ match, history }) => {
     }
 
     const save = () => {
-        if (id === '0') {
-            delete course._id;
-            insert('courses', course, data => {
-                if (data) return history.push('/courses');
-                console.log('There was error during save data');
-            })
-        } else {
-            update('courses', id, course, data => {
-                if (data) return history.push('/courses');
-                console.log('There was error during save data');
+        const valid = inputValidation();
+        if (valid) {
+            if (id === '0') {
+                delete course._id;
+                insert('courses', course, data => {
+                    if (data) return history.push('/courses');
+                    console.log('There was error during save data');
+                })
+            } else {
+                update('courses', id, course, data => {
+                    if (data) return history.push('/courses');
+                    console.log('There was error during save data');
 
-            })
+                })
+            }
         }
     }
 
@@ -60,14 +77,14 @@ const Course = ({ match, history }) => {
                     <input type='text'
                         name='name'
                         value={course.name}
-                        onChange={changeHandler} required/>
+                        onChange={changeHandler} required />
                 </div>
                 <div style={{ margin: '12px 0' }}>
                     <label htmlFor='points'>Course points: </label>
                     <input type='number'
                         name='points'
                         value={course.points}
-                        onChange={changeHandler} required/>
+                        onChange={changeHandler} required />
                 </div>
                 <hr />
                 <div className='left'>
