@@ -33,10 +33,12 @@ const Student = ({ match, history }) => {
         var m = student.lastName;
         if (n === '') {
             console.log("Enter the student's first name!");
+            alert("Enter the student's first name!");
             return false;
         }
         if (m === '') {
             console.log("Enter the student's last name!");
+            alert("Enter the student's last name!");
             return false;
         }
         return true;

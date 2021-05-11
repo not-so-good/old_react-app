@@ -30,7 +30,9 @@ const Course = ({ match, history }) => {
         var m = course.points;
         if (n === '') {
             console.log('Input a course name!');
+            alert('Input a course name!');
             return false;
+           
         }
         if (m === 0) {
             console.log('Input a course points!');
